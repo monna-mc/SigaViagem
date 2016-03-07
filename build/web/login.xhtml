@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <h:head>
+        <title>SiGAViagem - Login</title><meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="css/login.css"/>
+        <link rel="shortcut icon" href="favicon.png" type="../image/x-icon" />
+    </h:head>
+    <h:body>
+        <div id="loginbox">            
+            <h:form id="loginform" class="form-vertical">
+                <h:inputHidden value="#{loginMB.logout}"/>
+                <div class="control-group normal_text"> <h3>SiGAViagem</h3></div>
+                <div class="control-group">
+                    <h:messages style="color: red">
+                        <h:message for="loginform" style="color:red"/>
+                    </h:messages>
+                    <div class="controls" id="divLogin">
+                        <div class="main_input_box">
+                            <i class="icon-user"></i>
+                            Matrícula <h:inputText id="Usuario" required="true" requiredMessage="Campo Obrigatório" value="#{loginMB.usuario.matricula}" />
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <div class="main_input_box">
+                            <i class="icon-lock"></i>
+                            Senha <h:inputSecret id="senha" value="#{loginMB.usuario.senha}" requiredMessage="Campo Obrigatório" required="true"/>
+                            <message for="senha"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <span class="pull-right"><h:commandButton class="btn btn-success" value="Entrar" id="btLogin" action="#{loginMB.login()}"/></span>
+                    <span class="pull-left"><a value="Cadastre-se" class="btn flip-link" href="faces/cadastrarUsuario.xhtml" id="btCadastro">Cadastre-se</a></span>
+                </div>
+                <!--div class="form-actions">
+                    <span class="pull-right"><a href="#" class="flip-link btn btn-inverse" id="to-recover">Esqueceu a senha?</a></span>
+                    <span class="pull-left"><a id="Voltar" href="javascript:history.back()" class="flip-link btn btn-inverse">&laquo; Voltar</a></span>
+                </div-->
+                <!-- Botão de cadastro !-->
+            </h:form>
+            <!--form id="recoverform" action="#" class="form-vertical">
+                <p class="normal_text">Digite um endereço de e-mail, enviaremos instruções de como recuperar a senha. </p>
+
+                <div class="controls">
+                    <div class="main_input_box">
+                        <i class="icon-envelope"></i><input type="text" placeholder="Endereço de e-mail" />
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <span class="pull-left"><a href="#" class="flip-link btn btn-inverse" id="to-login">&laquo; Volte para o login</a></span>
+                    <span class="pull-right"><input type="submit" class="btn btn-info" value="Recuperar" /></span>
+                </div>
+            </form-->
+        </div>
+
+        <script src="js/jquery.min.js"></script>  
+        
+        <script src="js/jscript.login.js"></script>
+        
+        <script type="js/jquery.">
+            jQuery(function($){
+                history.back();
+            });
+        </script>
+        <!--script>            
+            $("form1:loginform").click();
+        </script-->
+        
+        <script type="js/jquery.mask.js">
+            jQuery(function($){
+                $("#Usuario").mask("9999999999");
+            });
+        </script>
+    </h:body>
+</html>

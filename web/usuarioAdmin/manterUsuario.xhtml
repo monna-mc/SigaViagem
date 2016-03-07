@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Cadastro de Usuário</title>
+        <!--  Favicon / -->
+        <link rel="shortcut icon" href="../favicon.png" type="../image/x-icon" />
+        <link rel="stylesheet" href="../${pageContext.request.contextPath}css.css" />
+        <link rel="stylesheet" href="../css/gumby.css"/>   <!-- Gumby Framework /-->
+        <link rel="stylesheet" href="../css/style.css"/>   <!-- Main stylesheet /-->
+    </h:head>
+    <h:body>
+        <h:link value="&lt; Menu Principal" outcome="index.html"/>
+        <div class=" right">
+            <a href="../faces/login.xhtml"><img class="icon-exit" src="../img/exit.png"/>SAIR</a>
+        </div>
+        <br/>
+        <h3>Cadastro de Usuários</h3>
+        <br/>
+        <h:form id="formAutorizacao">
+            <h:inputHidden value="#{loginMB.testeAutorizacao('admin')}"/>
+            <h:inputHidden value="#{loginMB.autorizacao}"/>
+        </h:form>
+        <h:form id="formUsuario" class="form-horizontal">
+            <h:inputHidden value="#{usuarioBean.usuario.id}"/>
+            <div class="control-group">
+                <div class="controls">
+                    <table class="tableForm">
+                        <colgroup><col align="right"></col><col align="left"></col></colgroup>
+                        <tr><th>MATRÍCULA:</th>
+                            <td><h:inputText id="matricula" value="#{usuarioBean.usuario.matricula}" required="true" requiredMessage="Campo Obrigatório"/>
+                                <h:message for="matricula"/>
+                            </td>
+                        </tr>
+                        <tr><th>NOME:</th>
+                            <td><h:inputText id="nome" value="#{usuarioBean.usuario.nome}" required="true" requiredMessage="Campo Obrigatório"/>
+                                <h:message for="nome"/>
+                            </td>
+                        </tr>
+                        <tr><th>SENHA:</th>
+                            <td><h:inputSecret id="senha" value="#{usuarioBean.senha}"/>
+                                <h:message for="senha"/>
+                            </td>
+                        </tr>
+                        <tr><th>CONFIRMAR SENHA:</th>
+                            <td><h:inputSecret id="confSenha" value="#{usuarioBean.confSenha}"/>
+                                <h:message for="confSenha"/>
+                            </td>
+                        </tr>
+                        <tr><th>E-MAIL:</th>
+                            <td><h:inputText id="email" value="#{usuarioBean.usuario.email}" required="true" label="Email" validatorMessage="Este Email não é Válido" requiredMessage="Campo Obrigatório">
+                                    <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                                </h:inputText>
+                                <h:message for="email"/>
+                            </td>
+                        </tr>
+                        <tr><th>TELEFONE:</th>
+                            <td><p:inputMask id="telefone" value="#{usuarioBean.usuario.telefone}" mask="(99) 99999-9999" required="true" requiredMessage="Campo Obrigatório"/>
+                                <h:message for="telefone"/>
+                            </td>
+                        </tr>
+                        <tr><th>TIPO DO USUÁRIO:</th>
+                            <td><h:selectOneMenu id="tipUsuario" value="#{usuarioBean.usuario.tipoUsuario}" required="True" requiredMessage="Campo Obrigatório">
+                                    <f:selectItem itemLabel="Selecione..."/>
+                                    <f:selectItem itemValue="admin" itemLabel="Usuário Admin"/>
+                                    <f:selectItem itemValue="comum" itemLabel="Usuário Comum"/>
+                                </h:selectOneMenu>
+                                <h:message for="tipUsuario"/>
+                            </td>
+                        </tr>
+                        <tr><th>STATUS:</th>
+                            <td><h:selectOneMenu id="status" value="#{usuarioBean.usuario.status}" required="True" requiredMessage="Campo Obrigatório">
+                                    <f:selectItem itemLabel="Selecione..."/>
+                                    <f:selectItem itemValue="Ativo" itemLabel="Ativo"/>
+                                    <f:selectItem itemValue="Inativo" itemLabel="Inativo"/>
+                                </h:selectOneMenu>
+                                <h:message for="status"/>
+                            </td>
+                        </tr>
+                        <tr><th>OBSERVAÇÔES:</th>
+                            <td><h:inputText id="observacao" value="#{usuarioBean.usuario.observacao}"/>
+                                <h:message for="observacao"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <h:messages for="formUsuario"/>
+                    <br/>
+                    <h:commandButton value="Inserir" class="button2" action="#{usuarioBean.inserir()}"/>
+                    <h:commandButton value="Alterar" class="button2" action="#{usuarioBean.alterar()}"/>
+                    <h:commandButton value="Excluir" class="button2" action="#{usuarioBean.excluir()}"/>
+                </div>
+            </div>
+        </h:form>
+        <br/>
+        <h:dataTable value="#{usuarioBean.usuarios}" var="usuario" border="1">
+            <h:column>
+                <f:facet name="header"><h:outputText value="ID" /></f:facet>
+                <h:form>
+                    <h:commandLink value="#{usuario.id}">                     
+                        <f:setPropertyActionListener target="#{usuarioBean.usuario}" value="#{usuario}"/>
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="MATRICULA" /></f:facet>
+                <h:form>
+                    <h:commandLink value="#{usuario.matricula}">                     
+                        <f:setPropertyActionListener target="#{usuarioBean.usuario}" value="#{usuario}"/>
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="NOME" /></f:facet>
+                <h:form>
+                    <h:commandLink value="#{usuario.nome}">                     
+                        <f:setPropertyActionListener target="#{usuarioBean.usuario}" value="#{usuario}"/>
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+            <!--<h:column>
+                <f:facet name="header"><h:outputText value="Senha" /></f:facet>
+                <h:form>
+                    <h:commandLink value="#{usuario.senha}">                     
+                        <f:setPropertyActionListener target="#{usuarioBean.usuario}" value="#{usuario}"/>
+                    </h:commandLink>
+                </h:form>
+            </h:column>-->
+            <h:column>
+                <f:facet name="header"><h:outputText value="E-MAIL" /></f:facet>
+                <h:form>
+                    <h:commandLink value="#{usuario.email}">                     
+                        <f:setPropertyActionListener target="#{usuarioBean.usuario}" value="#{usuario}"/>
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="TELEFONE" /></f:facet>
+                <h:form>
+                    <h:commandLink value="#{usuario.telefone}">                     
+                        <f:setPropertyActionListener target="#{usuarioBean.usuario}" value="#{usuario}"/>
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="TIPO DO USUÁRIO" /></f:facet>
+                <h:form>
+                    <h:commandLink value="#{usuario.tipoUsuario}">                     
+                        <f:setPropertyActionListener target="#{usuarioBean.usuario}" value="#{usuario}"/>
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="STATUS" /></f:facet>
+                <h:form>
+                    <h:commandLink value="#{usuario.status}">                     
+                        <f:setPropertyActionListener target="#{usuarioBean.usuario}" value="#{usuario}"/>
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="OBSERVAÇÔES" /></f:facet>
+                <h:form>
+                    <h:commandLink value="#{usuario.observacao}">                     
+                        <f:setPropertyActionListener target="#{usuarioBean.usuario}" value="#{usuario}"/>
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+        </h:dataTable>
+    </h:body>
+</html>
+

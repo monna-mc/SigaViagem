@@ -1,0 +1,230 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Cadastro de Viagem</title>
+        <!--  Favicon / -->
+        <link rel="shortcut icon" href="../favicon.png" type="../image/x-icon" />
+        <link rel="stylesheet" href="../${pageContext.request.contextPath}css.css" />
+        <link rel="stylesheet" href="../css/gumby.css"/>   <!-- Gumby Framework /-->
+        <link rel="stylesheet" href="../css/style.css"/>   <!-- Main stylesheet /-->
+    </h:head>
+    <h:body>
+        <h:form>
+            <h:commandLink value="&lt; Menu Principal" action="#{viagemBean.zerarCamposIndex()}"/>
+            <div class=" right">
+                <h:commandLink action="#{viagemBean.zerarCamposLogin()}">
+                    <img class="icon-exit" src="../img/exit.png"/>SAIR
+                </h:commandLink>
+            </div>
+        </h:form>
+        <br/>
+        <br/>
+        <h3>Cadastro de Viagens</h3>
+        <br/>
+        <h:form id="formAutorizacao">
+            <h:inputHidden value="#{loginMB.testeAutorizacao('admin')}"/>
+            <h:inputHidden value="#{loginMB.autorizacao}"/>
+        </h:form>
+        <h:form id="formViagem" class="form-horizontal">
+            <h:inputHidden value="#{viagemBean.viagem.id}"/>
+            <div class="control-group">
+                <div class="controls">
+                    <table class="tableForm">
+                        <colgroup><col align="right"></col><col align="left"></col></colgroup>
+                        <tr><th>USUÁRIO*</th>
+                            <td><h:selectOneMenu id="usuario" value="#{viagemBean.usuario.id}" required="true" requiredMessage="Campo Obrigatório">
+                                    <f:selectItem itemLabel="Selecione..."/>
+                                    <f:selectItems value="#{usuarioBean.usuarios}" var="usu" itemLabel="#{usu.nome}" itemValue="#{usu.id}"/>
+                                </h:selectOneMenu>
+                                <h:message for="usuario"/>
+                            </td>
+                        </tr>
+                        <tr><th>DATA/HORA DE SAÍDA*</th>
+                            <td><p:calendar id="dataSaida" locale="pt_BR" value="#{viagemBean.viagem.dataSaida}" pattern="dd/MM/yyyy HH:mm" required="true" requiredMessage="Campo Obrigatório">
+                                    <p:ajax event="dateSelect" update="veiculo" />
+                                </p:calendar>
+                                <h:message for="dataSaida"/>
+                            </td>
+                        </tr>
+                        <tr><th>DATA/HORA DE RETORNO*</th>
+                            <td><p:calendar id="dataRetorno" locale="pt_BR" value="#{viagemBean.viagem.dataRetorno}" pattern="dd/MM/yyyy HH:mm" required="true" requiredMessage="Campo Obrigatório">
+                                    <p:ajax event="dateSelect" update="veiculo" />
+                                </p:calendar>
+                                <h:message for="dataRetorno"/>
+                            </td>
+                        </tr>
+                        <tr><th>VEÍCULO*</th>
+                            <td><h:selectOneMenu id="veiculo" value="#{viagemBean.veiculo.id}" required="true" requiredMessage="Campo Obrigatório">
+                                    <p:ajax update="motorista" />
+                                    <f:selectItem itemLabel="Selecione..."/>
+                                    <f:selectItems value="#{viagemBean.mostarVeiculosPorData()}" var="vei" itemLabel="#{vei.modelo} - #{vei.placa} - #{vei.capacidade} - #{vei.ano}" itemValue="#{vei.id}"/>
+                                </h:selectOneMenu>
+                                <h:message for="veiculo"/>
+                            </td>
+                        </tr>
+                        <tr><th>MOTORISTA*</th>
+                            <td><h:selectOneMenu id="motorista" value="#{viagemBean.motorista.id}" required="true" requiredMessage="Campo Obrigatório">
+                                    <f:selectItem itemLabel="Selecione..."/>
+                                    <f:selectItems value="#{viagemBean.mostarMotoristas()}" var="mot" itemLabel="#{mot.nome} - #{mot.catCNH}" itemValue="#{mot.id}"/>
+                                </h:selectOneMenu>
+                                <h:message for="motorista"/>
+                            </td>
+                        </tr>
+                        <tr><th>ORIGEM*</th>
+                            <td><h:selectOneMenu id="origem" value="#{viagemBean.origem.id}" required="true" requiredMessage="Campo Obrigatório">
+                                    <f:selectItem itemLabel="Selecione..."/>
+                                    <f:selectItems value="#{cidadeBean.cidades}" var="ori" itemLabel="#{ori.nome} - #{ori.estado.sigla}" itemValue="#{ori.id}"/>
+                                </h:selectOneMenu>
+                                <h:message for="origem"/>
+                            </td>
+                        </tr>
+                        <tr><th>DESTINO*</th>
+                            <td><h:selectOneMenu id="destino" value="#{viagemBean.destino.id}" required="true" requiredMessage="Campo Obrigatório">
+                                    <f:selectItem itemLabel="Selecione..."/>
+                                    <f:selectItems value="#{cidadeBean.cidades}" var="des" itemLabel="#{des.nome} - #{des.estado.sigla}" itemValue="#{des.id}"/>
+                                </h:selectOneMenu>
+                                <h:message for="destino"/>
+                            </td>
+                        </tr>
+                        <tr><th>STATUS*</th>
+                            <td><h:selectOneMenu id="status" value="#{viagemBean.viagem.status}" required="True" requiredMessage="Campo Obrigatório">
+                                    <f:selectItem itemLabel="Selecione..."/>
+                                    <f:selectItem itemValue="pendente de autorizacao" itemLabel="Pendente de Autorização"/>
+                                    <f:selectItem itemValue="autorizada" itemLabel="Autorizada"/>
+                                    <f:selectItem itemValue="retornada" itemLabel="Retornada"/>
+                                    <f:selectItem itemValue="cancelada" itemLabel="Cancelada"/>
+                                    <f:selectItem itemValue="negada" itemLabel="Negada"/>
+                                </h:selectOneMenu>
+                                <h:message for="status"/>
+                            </td>
+                        </tr>
+                        <tr><th>DESCRIÇÃO DA VIAGEM*</th>
+                            <td><h:inputTextarea id="observacao" value="#{viagemBean.viagem.observacao}" required="True" requiredMessage="Campo Obrigatório"/>
+                                <h:message for="observacao"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <h:messages for="formViagem"/>
+                    <h:commandButton value="Inserir" class="button2" action="#{viagemBean.inserir()}"/>
+                    <h:commandButton value="Alterar" class="button2" action="#{viagemBean.alterar()}"/>
+                    <h:commandButton value="Excluir" class="button2" action="#{viagemBean.excluir()}"/>
+                </div>
+            </div>
+        </h:form>
+        <!--*****************Final de formulário de viagem*****************************-->
+        <br/>
+        <h:form class="form-horizontal">
+            <div class="control-group">
+                <div class="controls">
+                    <table class="tableForm">
+                        <tr><th>DATA DA VIAGEM*</th>
+                            <td><p:calendar id="dataViagem" locale="pt_BR" value="#{viagemBean.dat}" pattern="dd/MM/yyyy" required="true" requiredMessage="Campo Obrigatório"/>
+                             <h:message for="dataViagem"/>
+                             </td>
+                        </tr>
+                    </table>
+                    <h:commandButton value="Selecionar por Data da Viagem" class="button2" action="#{viagemBean.pesquisarPorData()}"/>
+                </div>
+            </div>
+        </h:form>
+        <br/>
+        <h:form class="form-horizontal">
+            <div class="control-group">
+                <div class="controls">
+                    <table class="tableForm">
+                        <tr><th>EXIBIR TODAS AS VIAGENS</th></tr>
+                    </table>
+                    <h:commandButton value="Selecionar Todas as Viagens" class="button2" action="#{viagemBean.pesquisarTodos()}"/>
+                </div>
+            </div>
+        </h:form>
+        <br/>
+        <h:dataTable id="dataTable" value="#{viagemBean.viagens}" var="via" border="1">
+            <h:column>
+                <f:facet name="header"><h:outputText value="ID" /></f:facet>
+                <h:form>
+                    <h:commandLink value=" #{via.id}"> 
+                        <f:setPropertyActionListener target="#{viagemBean.viagem}" value="#{via}"/>
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="USUARIOS" /></f:facet>
+                <h:form>
+                    <h:commandLink value=" #{via.usuario.nome}"> 
+                        <f:setPropertyActionListener target="#{viagemBean.viagem}" value="#{via}"/>
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="MOTORISTAS" /></f:facet>
+                <h:form>
+                    <h:commandLink value=" #{via.motorista.nome}"> 
+                        <f:setPropertyActionListener target="#{viagemBean.viagem}" value="#{via}"/>
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="VEÍCULO" /></f:facet>
+                <h:form>
+                    <h:commandLink value=" #{via.veiculo.modelo}"> 
+                        <f:setPropertyActionListener target="#{viagemBean.viagem}" value="#{via}"/>
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="ORIGEM" /></f:facet>
+                <h:form>
+                    <h:commandLink value="#{via.origem.nome} - #{via.origem.estado.sigla}">
+                        <f:setPropertyActionListener target="#{viagemBean.viagem}" value="#{via}"/>
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="DESTINO" /></f:facet>
+                <h:form>
+                    <h:commandLink value="#{via.destino.nome} - #{via.destino.estado.sigla}">
+                        <f:setPropertyActionListener target="#{viagemBean.viagem}" value="#{via}"/>
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="DATA/HORA DE SAÍDA" /></f:facet>
+                <h:form>
+                    <h:commandLink value="#{via.dataSaida}">
+                        <f:setPropertyActionListener target="#{viagemBean.viagem}" value="#{via}"/>
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="DATA/HORA DE RETORNO" /></f:facet>
+                <h:form>
+                    <h:commandLink value="#{via.dataRetorno}">
+                        <f:setPropertyActionListener target="#{viagemBean.viagem}" value="#{via}"/>
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="STATUS" /></f:facet>
+                <h:form>
+                    <h:commandLink value="#{via.status}">
+                        <f:setPropertyActionListener target="#{viagemBean.viagem}" value="#{via}"/>
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="OBSERVAÇÕES" /></f:facet>
+                <h:form>
+                    <h:commandLink value="#{via.observacao}">
+                        <f:setPropertyActionListener target="#{viagemBean.viagem}" value="#{via}"/>
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+        </h:dataTable>
+        <script src="js/idiomas.js"></script>
+    </h:body>
+</html>
