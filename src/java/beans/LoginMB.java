@@ -39,37 +39,36 @@ public class LoginMB {
     public LoginMB(){
     }
     
+    
+    /*
+      Método que verifica existência do usuário no sistema
+     */
     public String login(){
-        if(validaLogin()){
-            if(usuario.getTipoUsuario().equals("admin")){
-                return "faces/usuarioAdmin/index.html";
+        if(validaLogin()){ // chama metódo que retorna valor boolean, se o valor retornado for true a condição é satisfeita
+            if(usuario.getTipoUsuario().equals("admin")){ // verifica se o status do usuário é admin
+                return "faces/usuarioAdmin/index.html";//se condição foi satisfeita leva usuário a página inicial do administrador
             }
-            else if(usuario.getTipoUsuario().equals("comum")){
-                return "faces/usuarioComum/index.html";
+            else if(usuario.getTipoUsuario().equals("comum")){// verifica se o status do usuário é comum
+                return "faces/usuarioComum/index.html";//se condição foi satisfeita, leva para página do usuário comum
             }
         }
-        return "faces/login.xhtml";
+        return "faces/login.xhtml";// se o usuário não existir no sistema, retorna o usuário a página de login
     }
     
+    /*
+      Método para validar o login do usuário
+     */
     public boolean validaLogin(){
-        Usuario2 u = daoUsuario.findUsuario(usuario.getMatricula(), usuario.getSenha());
-        if (u != null && u.getStatus().equals("Ativo")){
+        Usuario2 u = daoUsuario.findUsuario(usuario.getMatricula(), usuario.getSenha()); /* a variável "u" recebe o objeto
+        encontrado apartir da pesquisa no BD do usuário*/
+        if (u != null && u.getStatus().equals("Ativo")){ //se o valor da variável "u" diferente de NULL, o usuário existe no BD
             usuario = u;
-            //UsuarioMB umb = FacesUtil.getUsuarioMB();
-            //umb.setUsuario(usuario);
-            return true;
+            return true; // retorna valor true quando cadastro do usuário existir no sistema
         } else {
-            return false;
+            return false;// retorna valor false quando o usuário não estiver cadastrado no sistema
         }
     }
-    
-    //public String logout(){
-      //  usuario = new Usuario2();
-        //logado = false;
-        
-        //return "../faces/login.xhtml";
-    //}
-
+   
     /**
      * @return the usuario
      */
@@ -84,6 +83,9 @@ public class LoginMB {
         this.usuario = usuario;
     }
     
+     /*
+      Método para adicionar usuários a uma lista de usuários
+     */
     public List<Usuario2> getUsuarios() {
         List usuarios = new ArrayList<Usuario2>();
         usuarios.add(usuario);
@@ -92,10 +94,11 @@ public class LoginMB {
 
     /**
      * @return the logout
+     * metodo usado para fazer o logout do usuário no sistema
      */
     public String getLogout() {
-        usuario = new Usuario2();
-        autorizacao = "";
+        usuario = new Usuario2(); // a variável usuário é reiniciada
+        autorizacao = ""; // a variável autorização é reiniciada
         return logout;
     }
 

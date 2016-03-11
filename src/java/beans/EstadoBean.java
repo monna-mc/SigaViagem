@@ -24,6 +24,9 @@ import util.JPAUtil;
 @RequestScoped
 public class EstadoBean {
 
+     /**
+     * Crea uma nova instancia de EstadoBean
+     */
     private Estado estado = new Estado();
     EstadoJpaController daoEstado = new EstadoJpaController(JPAUtil.factory);
     private String mensagem;
@@ -31,46 +34,61 @@ public class EstadoBean {
     public EstadoBean() {
     }
 
+    /**
+     * Método inserir estado
+     */
     public void inserir() {
-        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = FacesContext.getCurrentInstance();/*é usado para acessar informações relacionadas 
+        ao processamento de cada requisição JSF e a renderização da resposta correspondente.)*/
         try {
-            estado.setId(null);
-            daoEstado.create(estado);
+            estado.setId(null); // insere o valor null como id de estado
+            daoEstado.create(estado); // chamada o método create do DAO, para criar e salvar o estado no BD 
             estado = new Estado();
-            context.addMessage("formEstado", new FacesMessage("Estado foi inserido com sucesso!"));
+            context.addMessage("formEstado", new FacesMessage("Estado foi inserido com sucesso!"));/*adiciona mensagem 
+            quando o objeto estado for inserido corretamente*/ 
         } catch (Exception ex) {
-            context.addMessage("formEstado", new FacesMessage("Estado não pode ser inserido"));
+            context.addMessage("formEstado", new FacesMessage("Estado não pode ser inserido"));/*adiciona mensagem 
+            quando o objeto estado não for inserido corretamente*/ 
             Logger.getLogger(EstadoBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    //public List<modelo.RelatorioEstado> pesquisarInfoDosEstados() {
-      //  return daoEstado.pesquisarInfoDosEstados();
-    //}
-
+     /**
+     * Método alterar estado
+     */
     public void alterar() {
-        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = FacesContext.getCurrentInstance();/*é usado para acessar informações relacionadas 
+        ao processamento de cada requisição JSF e a renderização da resposta correspondente.)*/
         try {
-            daoEstado.edit(estado);
+            daoEstado.edit(estado);// acessa o método do DAO, para editar o objeto estado
             estado = new Estado();
-            context.addMessage("formEstado", new FacesMessage("Estado foi alterado com sucesso!"));
+            context.addMessage("formEstado", new FacesMessage("Estado foi alterado com sucesso!"));/*adiciona mensagem 
+            quando o objeto estado for inserido corretamente*/ 
         } catch (NonexistentEntityException ex) {
-            context.addMessage("formEstado", new FacesMessage("Estado não pode ser alterado 1"));
+            context.addMessage("formEstado", new FacesMessage("Estado não pode ser alterado 1")); /*adiciona mensagem
+            quando o objeto estado a ser alterado não exitir no BD */ 
             Logger.getLogger(EstadoBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            context.addMessage("formEstado", new FacesMessage("Estado não pode ser alterado 2"));
+            context.addMessage("formEstado", new FacesMessage("Estado não pode ser alterado 2"));/*adiciona mensagem
+            quando algum tipo de erro na alteração da estado acontecer */ 
             Logger.getLogger(EstadoBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     * Método excluir estado
+     */
     public void excluir() {
-        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = FacesContext.getCurrentInstance();/*é usado para acessar informações relacionadas 
+        ao processamento de cada requisição JSF e a renderização da resposta correspondente.)*/
         try {
-            daoEstado.destroy(estado.getId());
+            daoEstado.destroy(estado.getId());// acessa o método do DAO, para excluir do BD o estado(usando sua ID)
             estado = new Estado();
-            context.addMessage("formEstado", new FacesMessage("Estado foi excluido com sucesso"));
+            context.addMessage("formEstado", new FacesMessage("Estado foi excluido com sucesso"));/*adiciona mensagem 
+            quando o objeto estado for excluído do BD */ 
         } catch (Exception ex) {
-            context.addMessage("formEstado", new FacesMessage("Estado não pode ser excluido"));
+            context.addMessage("formEstado", new FacesMessage("Estado não pode ser excluido"));/*adiciona mensagem 
+            quando ocorrer erro na exclusão do objeto estado*/ 
             Logger.getLogger(EstadoBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -83,6 +101,9 @@ public class EstadoBean {
         this.estado = estado;
     }
 
+    /*
+    Retorna a lista de todos os estados inserido no BD
+    */
     public List<Estado> getEstados() {
         return daoEstado.findEstadoEntities();
     }

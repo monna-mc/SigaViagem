@@ -47,9 +47,6 @@ public class ViagemBean {
     private Cidade destino = new Cidade();
     private List<Viagem> viagens = new ArrayList<Viagem>();
     private Date dat = null;
-    
-    //ViagemUsuarioJpaController daoViagemUsuario = new ViagemUsuarioJpaController(JPAUtil.factory);
-    //private ViagemUsuario viagemUsuario = new ViagemUsuario();
     ViagemJpaController daoViagem = new ViagemJpaController(JPAUtil.factory);
     MotoristaJpaController daoMotorista = new MotoristaJpaController(JPAUtil.factory);
     VeiculoJpaController daoVeiculo = new VeiculoJpaController(JPAUtil.factory);
@@ -58,10 +55,14 @@ public class ViagemBean {
     public ViagemBean() {
     }
 
+    /*
+     Método Cadastar viagem
+     */
     public void inserir() {
-        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = FacesContext.getCurrentInstance();/*é usado para acessar informações relacionadas 
+        ao processamento de cada requisição JSF e a renderização da resposta correspondente.)*/
         try {
-            viagem.setId(null);
+            viagem.setId(null);// inicializa variável Id com valor NULL
             if (!motorista.equals(new Motorista())){
                 viagem.setMotorista(motorista);
             }else{
@@ -85,13 +86,9 @@ public class ViagemBean {
         }
     }
 
-    //public void inserirUsuario() {
-      //  usuarios.add(usuario);
-        //setMensagem("Usuario2 adicionado na viagem!");
-    //}
-
     public void alterar() {
-        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = FacesContext.getCurrentInstance();/*é usado para acessar informações relacionadas 
+        ao processamento de cada requisição JSF e a renderização da resposta correspondente.)*/
         try {
             viagem.setMotorista(motorista);
             viagem.setVeiculo(veiculo);
@@ -116,7 +113,8 @@ public class ViagemBean {
     }
 
     public void excluir() {
-        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = FacesContext.getCurrentInstance();/*é usado para acessar informações relacionadas 
+        ao processamento de cada requisição JSF e a renderização da resposta correspondente.)*/
         try {
             daoViagem.destroy(viagem.getId());
             motorista = new Motorista();
